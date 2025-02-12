@@ -1,37 +1,76 @@
 import './App.css';
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
-import { useState } from 'react';
+import {
+  AppShell,
+  Burger,
+  Group,
+  MantineProvider,
+  UnstyledButton,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { Notifications } from '@mantine/notifications';
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 
-import viteLogo from '/vite.svg';
-
-import reactLogo from './assets/react.svg';
+import classes from './App.module.scss';
+import NotFound from './modules/NotFound/NotFound';
+import PlacementForm from './modules/PlacementForm/PlacementForm';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [opened, { toggle }] = useDisclosure();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <MantineProvider>
+        <Notifications />
+        <AppShell
+          header={{ height: 60 }}
+          navbar={{
+            width: 300,
+            breakpoint: 'sm',
+            collapsed: { desktop: true, mobile: !opened },
+          }}
+          padding="md"
+        >
+          <AppShell.Header>
+            <Group h="100%" px="md">
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+              />
+              <Group justify="space-between" style={{ flex: 1 }}>
+                <Link to="/list" className={classes.link}>
+                  Объявления
+                </Link>
+                <Group ml="xl" gap={0} visibleFrom="sm">
+                  <UnstyledButton className={classes.control}>
+                    <Link to="/form" className={classes.link}>
+                      Список объявлений
+                    </Link>
+                  </UnstyledButton>
+                </Group>
+              </Group>
+            </Group>
+          </AppShell.Header>
+          <AppShell.Navbar py="md" px={2}>
+            <UnstyledButton className={classes.control}>
+              <Link to="/form" className={classes.link}>
+                Список объявлений
+              </Link>
+            </UnstyledButton>
+          </AppShell.Navbar>
+          <AppShell.Main>
+            <Routes>
+              <Route path="/form" element={<PlacementForm />} />
+              <Route path="/*" element={<NotFound />} />
+            </Routes>
+          </AppShell.Main>
+        </AppShell>
+      </MantineProvider>
+    </Router>
   );
 }
 
