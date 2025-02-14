@@ -1,3 +1,6 @@
 export const ADVERTISEMENT_SLICE_NAME = 'advertisements';
 
 export const CREATE_ADVERTISEMENT_ACTION_NAME = `${ADVERTISEMENT_SLICE_NAME}/createAdvertisement`;
+export const GET_ADVERTISEMENTS_ACTION_NAME = `${ADVERTISEMENT_SLICE_NAME}/getAdvertisements`;
+export const GET_ADVERTISEMENT_ACTION_NAME = `${ADVERTISEMENT_SLICE_NAME}/getAdvertisement`;
+export const EDIT_ADVERTISEMENT_ACTION_NAME = `${ADVERTISEMENT_SLICE_NAME}/editAdvertisement`;

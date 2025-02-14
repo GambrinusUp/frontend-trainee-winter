@@ -1,29 +1,30 @@
 import { Button, em, Group, Stepper, Title } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { Loader } from 'lucide-react';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useNotification } from '../../hooks/useNotification';
-import { createAdvertisement } from '../../store/AdvertisementStore/AdvertisementStore.action';
+import { setEdit } from '../../store/AdvertisementStore/AdvertisementStoreSlice';
 import CategoryStep from './components/CategoryStep/CategoryStep';
 import GeneralStep from './components/GeneralStep/GeneralStep';
 import usePlacementForm from './PlacementForm.hooks';
-import { mapAdvertisementData } from './PlacementForm.utils';
 
 const PlacementForm = () => {
-  const error = useAppSelector((state) => state.advertisementStore.error);
+  const { isEditing, isLoading, error } = useAppSelector(
+    (state) => state.advertisementStore,
+  );
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
-  const { form, active, setActive, nextStep, prevStep } = usePlacementForm();
-  const { showSuccess, showError } = useNotification();
+  const { form, active, setActive, nextStep, prevStep, handleSubmit } =
+    usePlacementForm();
+  const { showError } = useNotification();
 
-  const handleSubmit = async () => {
-    const formData = form.getValues();
-    const finalData = mapAdvertisementData(formData);
-    const result = await dispatch(createAdvertisement(finalData));
-    if (result.meta.requestStatus === 'fulfilled') {
-      showSuccess('Объявление успешно создано');
-    }
+  const handleBack = () => {
+    navigate('/list');
+    dispatch(setEdit({ isEditing: false }));
   };
 
   useEffect(() => {
@@ -33,7 +34,13 @@ const PlacementForm = () => {
 
   return (
     <>
-      <Title order={1}>Создание нового объявления</Title>
+      <Group justify="center">
+        <Title order={1}>
+          {!isEditing
+            ? 'Создание нового объявления'
+            : 'Редактирование объявления'}
+        </Title>
+      </Group>
       <Stepper
         active={active}
         onStepClick={setActive}
@@ -68,19 +75,44 @@ const PlacementForm = () => {
         >
           <CategoryStep form={form} />
         </Stepper.Step>
+        <Stepper.Completed>
+          {isLoading ? (
+            <Loader color="blue" size="xl" />
+          ) : error ? (
+            'Возникла ошибка при создании объявления'
+          ) : isEditing ? (
+            'Объявление отредактировано'
+          ) : (
+            'Объявление создано'
+          )}
+        </Stepper.Completed>
       </Stepper>
       <Group justify="center" mt="xl">
-        <Button variant="default" onClick={prevStep} radius="md">
-          Назад
-        </Button>
         {active === 2 ? (
-          <Button onClick={handleSubmit} radius="md">
-            Создать
+          <Button onClick={handleBack} radius="md">
+            Назад в объявления
           </Button>
         ) : (
-          <Button onClick={nextStep} radius="md">
-            Далee
-          </Button>
+          <>
+            {active === 0 ? (
+              <Button variant="default" onClick={handleBack} radius="md">
+                Назад в объявления
+              </Button>
+            ) : (
+              <Button variant="default" onClick={prevStep} radius="md">
+                Назад
+              </Button>
+            )}
+            {active === 1 ? (
+              <Button onClick={handleSubmit} radius="md">
+                {isEditing ? 'Изменить' : 'Создать'}
+              </Button>
+            ) : (
+              <Button onClick={nextStep} radius="md">
+                Далее
+              </Button>
+            )}
+          </>
         )}
       </Group>
     </>

@@ -14,6 +14,7 @@ const RealtyForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         label="Тип недвижимости"
         placeholder="Выберите тип недвижимости"
         data={REALTY_TYPES}
+        key={form.key('propertyType')}
         {...form.getInputProps('propertyType')}
       />
       <NumberInput
@@ -24,6 +25,7 @@ const RealtyForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         hideControls
         allowNegative={false}
         suffix=" кв. м"
+        key={form.key('area')}
         {...form.getInputProps('area')}
       />
       <NumberInput
@@ -33,6 +35,7 @@ const RealtyForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         placeholder="Введите количество комнат"
         hideControls
         allowNegative={false}
+        key={form.key('rooms')}
         {...form.getInputProps('rooms')}
       />
       <NumberInput
@@ -43,6 +46,7 @@ const RealtyForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         hideControls
         allowNegative={false}
         suffix=" руб."
+        key={form.key('price')}
         {...form.getInputProps('price')}
       />
     </Stack>

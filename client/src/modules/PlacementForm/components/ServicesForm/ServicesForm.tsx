@@ -14,6 +14,7 @@ const ServicesForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         label="Тип услуги"
         placeholder="Выберите тип услуги"
         data={SERVICES_TYPES}
+        key={form.key('serviceType')}
         {...form.getInputProps('serviceType')}
       />
       <NumberInput
@@ -22,6 +23,7 @@ const ServicesForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         placeholder="Введите ваш опыт работы"
         allowNegative={false}
         suffix=" лет"
+        key={form.key('experience')}
         {...form.getInputProps('experience')}
       />
       <NumberInput
@@ -31,12 +33,14 @@ const ServicesForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         label="Стоимость"
         placeholder="Введите стоимость услуги"
         allowNegative={false}
+        key={form.key('cost')}
         {...form.getInputProps('cost')}
       />
       <TextInput
         radius="md"
         label="График работы"
         placeholder="Введите график работы "
+        key={form.key('workSchedule')}
         {...form.getInputProps('workSchedule')}
       />
     </Stack>

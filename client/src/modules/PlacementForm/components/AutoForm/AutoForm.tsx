@@ -14,6 +14,7 @@ const AutoForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         label="Марка"
         placeholder="Выберите марку авто"
         data={AUTO_BRANDS}
+        key={form.key('brand')}
         {...form.getInputProps('brand')}
       />
       <TextInput
@@ -21,6 +22,7 @@ const AutoForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         radius="md"
         label="Модель"
         placeholder="Введите модель авто"
+        key={form.key('model')}
         {...form.getInputProps('model')}
       />
       <NumberInput
@@ -31,6 +33,7 @@ const AutoForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         min={1886}
         max={2026}
         allowNegative={false}
+        key={form.key('year')}
         {...form.getInputProps('year')}
       />
       <NumberInput
@@ -40,6 +43,7 @@ const AutoForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
         hideControls
         allowNegative={false}
         suffix=" км."
+        key={form.key('mileage')}
         {...form.getInputProps('mileage')}
       />
     </Stack>

@@ -34,6 +34,7 @@ export const mapAdvertisementData = (
     description: formData.description,
     location: formData.location,
     type: formData.type,
+    image: formData.image,
     ...advertisementData[formData.type],
   } as AdvertisementItem;
 };

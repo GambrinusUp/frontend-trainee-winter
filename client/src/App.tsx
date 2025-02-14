@@ -14,6 +14,8 @@ import { Notifications } from '@mantine/notifications';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 
 import classes from './App.module.scss';
+import Advertisement from './modules/Advertisement/Advertisement';
+import AdvertisementList from './modules/AdvertisementList/AdvertisementList';
 import NotFound from './modules/NotFound/NotFound';
 import PlacementForm from './modules/PlacementForm/PlacementForm';
 
@@ -42,29 +44,29 @@ function App() {
                 size="sm"
               />
               <Group justify="space-between" style={{ flex: 1 }}>
-                <Link to="/list" className={classes.link}>
-                  Объявления
-                </Link>
+                Объявления
                 <Group ml="xl" gap={0} visibleFrom="sm">
-                  <UnstyledButton className={classes.control}>
-                    <Link to="/form" className={classes.link}>
+                  <Link to="/list" className={classes.link}>
+                    <UnstyledButton className={classes.control}>
                       Список объявлений
-                    </Link>
-                  </UnstyledButton>
+                    </UnstyledButton>
+                  </Link>
                 </Group>
               </Group>
             </Group>
           </AppShell.Header>
           <AppShell.Navbar py="md" px={2}>
-            <UnstyledButton className={classes.control}>
-              <Link to="/form" className={classes.link}>
+            <Link to="/list" className={classes.link}>
+              <UnstyledButton className={classes.control} onClick={toggle}>
                 Список объявлений
-              </Link>
-            </UnstyledButton>
+              </UnstyledButton>
+            </Link>
           </AppShell.Navbar>
           <AppShell.Main>
             <Routes>
               <Route path="/form" element={<PlacementForm />} />
+              <Route path="/list" element={<AdvertisementList />} />
+              <Route path="/item/:id" element={<Advertisement />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </AppShell.Main>

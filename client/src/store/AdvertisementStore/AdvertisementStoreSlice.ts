@@ -1,11 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { createAdvertisement } from './AdvertisementStore.action';
+import { AdvertisementType } from '../../shared/types';
+import {
+  createAdvertisement,
+  editAdvertisement,
+  getAdvertisement,
+  getAdvertisements,
+} from './AdvertisementStore.action';
 import { ADVERTISEMENT_SLICE_NAME } from './AdvertisementStore.const';
-import { AdvertisementState } from './AdvertisementStore.types';
+import {
+  AdvertisementItemResponse,
+  AdvertisementState,
+} from './AdvertisementStore.types';
 
 const initialState: AdvertisementState = {
   advertisements: [],
+  advertisement: {
+    id: -1,
+    name: '',
+    description: '',
+    location: '',
+    type: AdvertisementType.RealEstate,
+    propertyType: '',
+    area: 0,
+    rooms: 0,
+    price: 0,
+  },
+  currentPage: 1,
+  totalPages: 1,
+  isEditing: false,
+  advertisementEdit: undefined,
   isLoading: false,
   error: undefined,
 };
@@ -13,7 +37,20 @@ const initialState: AdvertisementState = {
 export const AdvertisementSlice = createSlice({
   name: ADVERTISEMENT_SLICE_NAME,
   initialState,
-  reducers: {},
+  reducers: {
+    setEdit: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        isEditing: boolean;
+        advertisementEdit?: AdvertisementItemResponse | undefined;
+      }>,
+    ) => {
+      state.isEditing = payload.isEditing;
+      state.advertisementEdit = payload.advertisementEdit;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createAdvertisement.pending, (state) => {
@@ -22,14 +59,65 @@ export const AdvertisementSlice = createSlice({
       })
       .addCase(createAdvertisement.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.advertisements = [payload, ...state.advertisements];
+        if (state.advertisements.length < 5) {
+          state.advertisements = [...state.advertisements, payload];
+        } else {
+          state.totalPages++;
+        }
         state.error = undefined;
       })
       .addCase(createAdvertisement.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+      })
+      .addCase(getAdvertisements.pending, (state) => {
+        state.isLoading = true;
+        state.error = undefined;
+      })
+      .addCase(getAdvertisements.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.advertisements = payload.advertisements;
+        state.currentPage = payload.currentPage;
+        state.totalPages = payload.totalPages;
+        state.error = undefined;
+      })
+      .addCase(getAdvertisements.rejected, (state, { payload }) => {
+        state.currentPage = 1;
+        state.totalPages = 1;
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(getAdvertisement.pending, (state) => {
+        state.isLoading = true;
+        state.error = undefined;
+      })
+      .addCase(getAdvertisement.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.advertisement = payload;
+        state.error = undefined;
+      })
+      .addCase(getAdvertisement.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(editAdvertisement.pending, (state) => {
+        state.isLoading = true;
+        state.error = undefined;
+      })
+      .addCase(editAdvertisement.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = undefined;
+        state.advertisements = state.advertisements.map((advertisement) =>
+          advertisement.id === payload.id ? payload : advertisement,
+        );
+      })
+      .addCase(editAdvertisement.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       });
   },
 });
+
+export const { setEdit } = AdvertisementSlice.actions;
 
 export default AdvertisementSlice.reducer;

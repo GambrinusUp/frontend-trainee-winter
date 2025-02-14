@@ -1,6 +1,8 @@
 import { AdvertisementType } from '../../shared/types';
 
 export interface FormValues {
+  id?: number | undefined;
+
   name: string;
   description: string;
   location: string;

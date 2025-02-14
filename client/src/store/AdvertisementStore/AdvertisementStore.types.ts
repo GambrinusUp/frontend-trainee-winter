@@ -1,9 +1,25 @@
 import { AdvertisementType } from '../../shared/types';
 
 export interface AdvertisementState {
-  advertisements: AdvertisementItem[];
+  advertisements: AdvertisementItemResponse[];
+  advertisement: AdvertisementItemResponse;
+  isEditing: boolean;
+  advertisementEdit: AdvertisementItemResponse | undefined;
+  currentPage: number;
+  totalPages: number;
   isLoading: boolean;
   error?: string;
+}
+
+export interface AdvertisementsResponse {
+  advertisements: AdvertisementItemResponse[];
+  currentPage: number;
+  totalPages: number;
+}
+
+export interface PaginationParams {
+  page: number;
+  limit: number;
 }
 
 export interface BaseAdvertisement {
