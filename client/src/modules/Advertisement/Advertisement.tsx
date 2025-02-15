@@ -19,7 +19,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useNotification } from '../../hooks/useNotification';
 import { AdvertisementType } from '../../shared/types';
 import NoImage from '../../static/izobrazhenie_sozdanie_kartinki_obgutyszi59o_512.png';
-import { getAdvertisement } from '../../store/AdvertisementStore/AdvertisementStore.action';
+import {
+  deleteAdvertisement,
+  getAdvertisement,
+} from '../../store/AdvertisementStore/AdvertisementStore.action';
 import { setEdit } from '../../store/AdvertisementStore/AdvertisementStoreSlice';
 import AutoFields from './components/AutoFields/AutoFields';
 import RealEstateFields from './components/RealEstateFields/RealEstateFields';
@@ -33,11 +36,21 @@ const Advertisement = () => {
   const { advertisement, isLoading, error } = useAppSelector(
     (state) => state.advertisementStore,
   );
-  const { showError } = useNotification();
+  const { showError, showSuccess } = useNotification();
 
   const handleEdit = () => {
     dispatch(setEdit({ isEditing: true, advertisementEdit: advertisement }));
     navigate('/form');
+  };
+
+  const handleDelete = async () => {
+    if (id) {
+      const result = await dispatch(deleteAdvertisement({ id }));
+      if (result.meta.requestStatus === 'fulfilled') {
+        showSuccess('Объявление успешно удалено');
+        navigate('/list');
+      }
+    }
   };
 
   useEffect(() => {
@@ -115,6 +128,16 @@ const Advertisement = () => {
             onClick={handleEdit}
           >
             Редактировать
+          </Button>
+          <Button
+            variant="filled"
+            color="red"
+            size="md"
+            radius="md"
+            mt="md"
+            onClick={handleDelete}
+          >
+            Удалить
           </Button>
         </Stack>
       </Group>

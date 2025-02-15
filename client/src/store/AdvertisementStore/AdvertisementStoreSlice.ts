@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AdvertisementType } from '../../shared/types';
 import {
   createAdvertisement,
+  deleteAdvertisement,
   editAdvertisement,
   getAdvertisement,
   getAdvertisements,
@@ -112,6 +113,21 @@ export const AdvertisementSlice = createSlice({
         );
       })
       .addCase(editAdvertisement.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(deleteAdvertisement.pending, (state) => {
+        state.isLoading = true;
+        state.error = undefined;
+      })
+      .addCase(deleteAdvertisement.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = undefined;
+        state.advertisements = state.advertisements.filter(
+          (advertisement) => advertisement.id !== Number(payload.id),
+        );
+      })
+      .addCase(deleteAdvertisement.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

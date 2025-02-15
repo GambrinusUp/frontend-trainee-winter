@@ -8,7 +8,6 @@ import {
   createAdvertisement,
   editAdvertisement,
 } from '../../store/AdvertisementStore/AdvertisementStore.action';
-import { setEdit } from '../../store/AdvertisementStore/AdvertisementStoreSlice';
 import { debounce } from '../../utils/debounce';
 import { isImageUrl } from './components/GeneralStep/GeneralStep.utils';
 import { FormValues } from './PlacementForm.types';
@@ -157,7 +156,6 @@ const usePlacementForm = () => {
         if (result.meta.requestStatus === 'fulfilled') {
           showSuccess('Объявление успешно отредактировано');
         }
-        dispatch(setEdit({ isEditing: false }));
       } else {
         const result = await dispatch(createAdvertisement(finalData));
         if (result.meta.requestStatus === 'fulfilled') {

@@ -9,6 +9,7 @@ import {
 } from '../../constants/apiURL';
 import {
   CREATE_ADVERTISEMENT_ACTION_NAME,
+  DELETE_ADVERTISEMENT_ACTION_NAME,
   EDIT_ADVERTISEMENT_ACTION_NAME,
   GET_ADVERTISEMENT_ACTION_NAME,
   GET_ADVERTISEMENTS_ACTION_NAME,
@@ -122,3 +123,26 @@ export const editAdvertisement = createAsyncThunk<
     }
   },
 );
+
+export const deleteAdvertisement = createAsyncThunk<
+  { id: string },
+  { id: string },
+  {
+    rejectValue: string;
+  }
+>(DELETE_ADVERTISEMENT_ACTION_NAME, async ({ id }, { rejectWithValue }) => {
+  try {
+    await axiosInstance.delete<AdvertisementItemResponse>(
+      GET_ADVERTISEMENT(id),
+    );
+
+    return { id };
+  } catch (e) {
+    console.log(e);
+    if (e instanceof AxiosError) {
+      return rejectWithValue(e.response?.data?.error || 'Произошла ошибка');
+    }
+
+    return rejectWithValue('Произошла ошибка');
+  }
+});
