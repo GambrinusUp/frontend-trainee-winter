@@ -17,9 +17,25 @@ export interface AdvertisementsResponse {
   totalPages: number;
 }
 
-export interface PaginationParams {
+export interface QueryParams {
   page: number;
   limit: number;
+  name?: string;
+  type?: AdvertisementType;
+  propertyType?: string;
+  areaFrom?: string;
+  areaTo?: string;
+  rooms?: string;
+  priceFrom?: string;
+  priceTo?: string;
+  brand?: string;
+  model?: string;
+  yearFrom?: string;
+  yearTo?: string;
+  serviceType?: string;
+  experienceFrom?: string;
+  costFrom?: string;
+  costTo?: string;
 }
 
 export interface BaseAdvertisement {

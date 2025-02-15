@@ -33,6 +33,7 @@ const Advertisement = () => {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { isLoggedIn } = useAppSelector((state) => state.authStore);
   const { advertisement, isLoading, error } = useAppSelector(
     (state) => state.advertisementStore,
   );
@@ -120,25 +121,29 @@ const Advertisement = () => {
               workSchedule={advertisement.workSchedule}
             />
           )}
-          <Button
-            variant="filled"
-            size="md"
-            radius="md"
-            mt="md"
-            onClick={handleEdit}
-          >
-            Редактировать
-          </Button>
-          <Button
-            variant="filled"
-            color="red"
-            size="md"
-            radius="md"
-            mt="md"
-            onClick={handleDelete}
-          >
-            Удалить
-          </Button>
+          {isLoggedIn && (
+            <>
+              <Button
+                variant="filled"
+                size="md"
+                radius="md"
+                mt="md"
+                onClick={handleEdit}
+              >
+                Редактировать
+              </Button>
+              <Button
+                variant="filled"
+                color="red"
+                size="md"
+                radius="md"
+                mt="md"
+                onClick={handleDelete}
+              >
+                Удалить
+              </Button>
+            </>
+          )}
         </Stack>
       </Group>
     </Flex>

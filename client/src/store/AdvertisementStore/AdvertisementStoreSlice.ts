@@ -78,7 +78,8 @@ export const AdvertisementSlice = createSlice({
       .addCase(getAdvertisements.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.advertisements = payload.advertisements;
-        state.currentPage = payload.currentPage;
+        if (state.currentPage !== payload.currentPage)
+          state.currentPage = payload.currentPage;
         state.totalPages = payload.totalPages;
         state.error = undefined;
       })

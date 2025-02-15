@@ -14,13 +14,22 @@ import { Notifications } from '@mantine/notifications';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 
 import classes from './App.module.scss';
+import { useAppDispatch, useAppSelector } from './hooks/redux';
 import Advertisement from './modules/Advertisement/Advertisement';
 import AdvertisementList from './modules/AdvertisementList/AdvertisementList';
+import Auth from './modules/Auth/Auth';
 import NotFound from './modules/NotFound/NotFound';
 import PlacementForm from './modules/PlacementForm/PlacementForm';
+import { logout } from './store/AuthStore/AuthStoreSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+  const { isLoggedIn } = useAppSelector((state) => state.authStore);
   const [opened, { toggle }] = useDisclosure();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <Router>
@@ -51,6 +60,20 @@ function App() {
                       Список объявлений
                     </UnstyledButton>
                   </Link>
+                  {isLoggedIn ? (
+                    <UnstyledButton
+                      className={classes.control}
+                      onClick={handleLogout}
+                    >
+                      Выйти
+                    </UnstyledButton>
+                  ) : (
+                    <Link to="/auth" className={classes.link}>
+                      <UnstyledButton className={classes.control}>
+                        Войти
+                      </UnstyledButton>
+                    </Link>
+                  )}
                 </Group>
               </Group>
             </Group>
@@ -61,9 +84,24 @@ function App() {
                 Список объявлений
               </UnstyledButton>
             </Link>
+            {isLoggedIn ? (
+              <UnstyledButton
+                className={classes.control}
+                onClick={handleLogout}
+              >
+                Выйти
+              </UnstyledButton>
+            ) : (
+              <Link to="/auth" className={classes.link}>
+                <UnstyledButton className={classes.control}>
+                  Войти
+                </UnstyledButton>
+              </Link>
+            )}
           </AppShell.Navbar>
           <AppShell.Main>
             <Routes>
+              <Route path="/auth" element={<Auth />} />
               <Route path="/form" element={<PlacementForm />} />
               <Route path="/list" element={<AdvertisementList />} />
               <Route path="/item/:id" element={<Advertisement />} />

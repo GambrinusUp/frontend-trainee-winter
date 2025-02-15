@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import advertisementSlice from './AdvertisementStore/AdvertisementStoreSlice';
+import AuthSlice from './AuthStore/AuthStoreSlice';
 
 const store = configureStore({
   reducer: {
     advertisementStore: advertisementSlice,
+    authStore: AuthSlice,
   },
 });
 

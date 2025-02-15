@@ -1,39 +1,33 @@
 import {
   Button,
   CloseButton,
+  Flex,
   Group,
   Input,
+  NumberInput,
   Select,
   Stack,
+  TextInput,
 } from '@mantine/core';
 import { Plus, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../../../hooks/redux';
+import { AUTO_BRANDS } from '../../../../constants/auto';
+import { REALTY_TYPES } from '../../../../constants/realty';
+import { SERVICES_TYPES } from '../../../../constants/services';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { AdvertisementType } from '../../../../shared/types';
 import { setEdit } from '../../../../store/AdvertisementStore/AdvertisementStoreSlice';
 import { PanelProps } from './Panel.types';
 
-const Panel = ({
-  searchTerm,
-  onSearchChange,
-  selectedCategory,
-  onCategoryChange,
-}: PanelProps) => {
+const Panel = ({ form }: PanelProps) => {
+  const { isLoggedIn } = useAppSelector((state) => state.authStore);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleCreate = () => {
     dispatch(setEdit({ isEditing: false }));
     navigate('/form');
-  };
-
-  const handleInputChange = (value: string) => {
-    onSearchChange(value);
-  };
-
-  const handleClearSearch = () => {
-    onSearchChange('');
   };
 
   return (
@@ -45,10 +39,15 @@ const Panel = ({
         w="80%"
         radius="md"
         rightSectionPointerEvents="all"
-        value={searchTerm}
-        onChange={(event) => handleInputChange(event.target.value)}
+        key={form.key('name')}
+        {...form.getInputProps('name')}
         rightSection={
-          <CloseButton aria-label="Clear input" onClick={handleClearSearch} />
+          <CloseButton
+            aria-label="Clear input"
+            onClick={() => {
+              form.setValues({ name: '' });
+            }}
+          />
         }
       />
       <Select
@@ -66,16 +65,139 @@ const Panel = ({
             label: AdvertisementType.Services,
           },
         ]}
-        value={selectedCategory}
-        onChange={(value) => onCategoryChange(value as AdvertisementType | '')}
+        key={form.key('type')}
+        {...form.getInputProps('type')}
+        onChange={(value) => {
+          const name = form.getValues().name;
+          form.reset();
+          form.setValues({ type: value as AdvertisementType });
+          form.setValues({ name });
+        }}
         clearable
+        onClear={() => {
+          const name = form.getValues().name;
+          form.reset();
+          form.setValues({ type: undefined });
+          form.setValues({ name });
+        }}
         w="80%"
       />
-      <Group justify="space-between" gap="md">
-        <Button rightSection={<Plus />} onClick={handleCreate}>
-          Создать объявление
-        </Button>
-      </Group>
+
+      {form.getValues().type && (
+        <Flex gap="md" wrap="wrap" justify="center" w="100%">
+          {form.getValues().type === AdvertisementType.RealEstate && (
+            <>
+              <Select
+                label="Тип недвижимости"
+                placeholder="Выберите тип"
+                data={REALTY_TYPES}
+                key={form.key('propertyType')}
+                {...form.getInputProps('propertyType')}
+                w={150}
+              />
+              <NumberInput
+                label="Площадь от"
+                key={form.key('areaFrom')}
+                {...form.getInputProps('areaFrom')}
+                w={100}
+              />
+              <NumberInput
+                label="Площадь до"
+                key={form.key('areaTo')}
+                {...form.getInputProps('areaTo')}
+                w={100}
+              />
+              <NumberInput
+                label="Комнат"
+                key={form.key('rooms')}
+                {...form.getInputProps('rooms')}
+                w={80}
+              />
+              <NumberInput
+                label="Цена от"
+                key={form.key('priceFrom')}
+                {...form.getInputProps('priceFrom')}
+                w={120}
+              />
+              <NumberInput
+                label="Цена до"
+                key={form.key('priceTo')}
+                {...form.getInputProps('priceTo')}
+                w={120}
+              />
+            </>
+          )}
+
+          {form.getValues().type === AdvertisementType.Auto && (
+            <>
+              <Select
+                label="Марка"
+                placeholder="Выберите марку"
+                data={AUTO_BRANDS}
+                key={form.key('brand')}
+                {...form.getInputProps('brand')}
+                w={150}
+              />
+              <TextInput
+                label="Модель"
+                key={form.key('model')}
+                {...form.getInputProps('model')}
+                w={120}
+              />
+              <NumberInput
+                label="Год от"
+                key={form.key('yearFrom')}
+                {...form.getInputProps('yearFrom')}
+                w={100}
+              />
+              <NumberInput
+                label="Год до"
+                key={form.key('yearTo')}
+                {...form.getInputProps('yearTo')}
+                w={100}
+              />
+            </>
+          )}
+
+          {form.getValues().type === AdvertisementType.Services && (
+            <>
+              <Select
+                label="Тип услуги"
+                placeholder="Выберите тип"
+                data={SERVICES_TYPES}
+                key={form.key('serviceType')}
+                {...form.getInputProps('serviceType')}
+                w={150}
+              />
+              <NumberInput
+                label="Опыт (от)"
+                key={form.key('experienceFrom')}
+                {...form.getInputProps('experienceFrom')}
+                w={100}
+              />
+              <NumberInput
+                label="Стоимость от"
+                key={form.key('costFrom')}
+                {...form.getInputProps('costFrom')}
+                w={120}
+              />
+              <NumberInput
+                label="Стоимость до"
+                key={form.key('costTo')}
+                {...form.getInputProps('costTo')}
+                w={120}
+              />
+            </>
+          )}
+        </Flex>
+      )}
+      {isLoggedIn && (
+        <Group gap="md" justify="center">
+          <Button rightSection={<Plus />} onClick={handleCreate}>
+            Создать объявление
+          </Button>
+        </Group>
+      )}
     </Stack>
   );
 };

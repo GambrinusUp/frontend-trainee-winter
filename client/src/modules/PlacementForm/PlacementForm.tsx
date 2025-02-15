@@ -12,6 +12,7 @@ import GeneralStep from './components/GeneralStep/GeneralStep';
 import usePlacementForm from './PlacementForm.hooks';
 
 const PlacementForm = () => {
+  const { isLoggedIn } = useAppSelector((state) => state.authStore);
   const { isEditing, isLoading, error } = useAppSelector(
     (state) => state.advertisementStore,
   );
@@ -26,6 +27,10 @@ const PlacementForm = () => {
     navigate('/list');
     dispatch(setEdit({ isEditing: false }));
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) navigate('/list');
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     if (error) showError(error);

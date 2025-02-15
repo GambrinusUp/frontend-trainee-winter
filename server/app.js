@@ -1,16 +1,62 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+const SECRET_KEY = "secret_key";
+const users = [];
+
+const app = express();
+app.use(bodyParser.json());
+app.use(cors());
+
+// Middleware для проверки токена
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) return res.status(401).json({ error: "Access denied" });
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) return res.status(403).json({ error: "Invalid token" });
+    req.user = user;
+    next();
+  });
+};
+
+// Регистрация пользователя
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password required" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  users.push({ email, password: hashedPassword });
+
+  const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "4h" });
+  res.status(201).json({ token });
+});
+
+// Вход пользователя
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find((u) => u.email === email);
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ error: "Invalid email or password" });
+  }
+
+  const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "4h" });
+  res.json({ token });
+});
 
 const ItemTypes = {
   REAL_ESTATE: "Недвижимость",
   AUTO: "Авто",
   SERVICES: "Услуги",
 };
-
-const app = express();
-app.use(bodyParser.json());
-app.use(cors());
 
 // In-memory хранилище для объявлений
 let items = [
@@ -127,7 +173,7 @@ const makeCounter = () => {
 const itemsIdCounter = makeCounter();
 
 // Создание нового объявления
-app.post("/items", (req, res) => {
+app.post("/items", authenticateToken, (req, res) => {
   const { name, description, location, type, ...rest } = req.body;
 
   // Validate common required fields
@@ -176,15 +222,103 @@ app.post("/items", (req, res) => {
 
 // Получение всех объявлений
 app.get("/items", (req, res) => {
+  let filteredItems = items;
+
+  if (req.query.type) {
+    filteredItems = filteredItems.filter(
+      (item) => item.type === req.query.type
+    );
+  }
+
+  if (req.query.name) {
+    const searchName = req.query.name.toLowerCase();
+    filteredItems = filteredItems.filter((item) =>
+      item.name.toLowerCase().includes(searchName)
+    );
+  }
+
+  if (req.query.type === "Недвижимость") {
+    if (req.query.propertyType) {
+      filteredItems = filteredItems.filter(
+        (item) => item.propertyType === req.query.propertyType
+      );
+    }
+    if (req.query.areaFrom) {
+      filteredItems = filteredItems.filter(
+        (item) => item.area >= parseFloat(req.query.areaFrom)
+      );
+    }
+    if (req.query.areaTo) {
+      filteredItems = filteredItems.filter(
+        (item) => item.area <= parseFloat(req.query.areaTo)
+      );
+    }
+    if (req.query.rooms) {
+      filteredItems = filteredItems.filter(
+        (item) => item.rooms === parseInt(req.query.rooms)
+      );
+    }
+    if (req.query.priceFrom) {
+      filteredItems = filteredItems.filter(
+        (item) => item.price >= parseFloat(req.query.priceFrom)
+      );
+    }
+    if (req.query.priceTo) {
+      filteredItems = filteredItems.filter(
+        (item) => item.price <= parseFloat(req.query.priceTo)
+      );
+    }
+  } else if (req.query.type === "Авто") {
+    if (req.query.brand) {
+      filteredItems = filteredItems.filter(
+        (item) => item.brand === req.query.brand
+      );
+    }
+    if (req.query.model) {
+      filteredItems = filteredItems.filter(
+        (item) => item.model === req.query.model
+      );
+    }
+    if (req.query.yearFrom) {
+      filteredItems = filteredItems.filter(
+        (item) => item.year >= parseInt(req.query.yearFrom)
+      );
+    }
+    if (req.query.yearTo) {
+      filteredItems = filteredItems.filter(
+        (item) => item.year <= parseInt(req.query.yearTo)
+      );
+    }
+  } else if (req.query.type === "Услуги") {
+    if (req.query.serviceType) {
+      filteredItems = filteredItems.filter(
+        (item) => item.serviceType === req.query.serviceType
+      );
+    }
+    if (req.query.experienceFrom) {
+      filteredItems = filteredItems.filter(
+        (item) => item.experience >= parseInt(req.query.experienceFrom)
+      );
+    }
+    if (req.query.costFrom) {
+      filteredItems = filteredItems.filter(
+        (item) => item.cost >= parseFloat(req.query.costFrom)
+      );
+    }
+    if (req.query.costTo) {
+      filteredItems = filteredItems.filter(
+        (item) => item.cost <= parseFloat(req.query.costTo)
+      );
+    }
+  }
+
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
-
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const advertisements = items.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(items.length / limit);
+  const advertisements = filteredItems.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredItems.length / limit);
 
   res.json({
     advertisements,
@@ -204,7 +338,7 @@ app.get("/items/:id", (req, res) => {
 });
 
 // Обновление объявления по его id
-app.put("/items/:id", (req, res) => {
+app.put("/items/:id", authenticateToken, (req, res) => {
   const item = items.find((i) => i.id === parseInt(req.params.id, 10));
   if (item) {
     Object.assign(item, req.body);
@@ -215,7 +349,7 @@ app.put("/items/:id", (req, res) => {
 });
 
 // Удаление объявления по его id
-app.delete("/items/:id", (req, res) => {
+app.delete("/items/:id", authenticateToken, (req, res) => {
   const itemIndex = items.findIndex(
     (i) => i.id === parseInt(req.params.id, 10)
   );

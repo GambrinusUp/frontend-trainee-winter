@@ -7,6 +7,7 @@ import {
   GET_ADVERTISEMENT,
   GET_ADVERTISEMENTS,
 } from '../../constants/apiURL';
+import { AdvertisementType } from '../../shared/types';
 import {
   CREATE_ADVERTISEMENT_ACTION_NAME,
   DELETE_ADVERTISEMENT_ACTION_NAME,
@@ -18,7 +19,7 @@ import {
   AdvertisementItem,
   AdvertisementItemResponse,
   AdvertisementsResponse,
-  PaginationParams,
+  QueryParams,
 } from './AdvertisementStore.types';
 
 export const createAdvertisement = createAsyncThunk<
@@ -50,16 +51,70 @@ export const createAdvertisement = createAsyncThunk<
 
 export const getAdvertisements = createAsyncThunk<
   AdvertisementsResponse,
-  PaginationParams,
+  QueryParams,
   {
     rejectValue: string;
   }
 >(
   GET_ADVERTISEMENTS_ACTION_NAME,
-  async ({ page, limit }, { rejectWithValue }) => {
+  async (
+    {
+      page,
+      limit,
+      name,
+      type,
+      propertyType,
+      areaFrom,
+      areaTo,
+      rooms,
+      priceFrom,
+      priceTo,
+      brand,
+      model,
+      yearFrom,
+      yearTo,
+      serviceType,
+      experienceFrom,
+      costFrom,
+      costTo,
+    },
+    { rejectWithValue },
+  ) => {
     try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+      });
+
+      if (name) params.append('name', name);
+      if (type) params.append('type', type);
+
+      if (type === AdvertisementType.RealEstate) {
+        if (propertyType) params.append('propertyType', propertyType);
+        if (areaFrom) params.append('areaFrom', areaFrom.toString());
+        if (areaTo) params.append('areaTo', areaTo.toString());
+        if (rooms) params.append('rooms', rooms.toString());
+        if (priceFrom) params.append('priceFrom', priceFrom.toString());
+        if (priceTo) params.append('priceTo', priceTo.toString());
+      }
+
+      if (type === AdvertisementType.Auto) {
+        if (brand) params.append('brand', brand);
+        if (model) params.append('model', model);
+        if (yearFrom) params.append('yearFrom', yearFrom.toString());
+        if (yearTo) params.append('yearTo', yearTo.toString());
+      }
+
+      if (type === AdvertisementType.Services) {
+        if (serviceType) params.append('serviceType', serviceType);
+        if (experienceFrom)
+          params.append('experienceFrom', experienceFrom.toString());
+        if (costFrom) params.append('costFrom', costFrom.toString());
+        if (costTo) params.append('costTo', costTo.toString());
+      }
+
       const res = await axiosInstance.get<AdvertisementsResponse>(
-        `${GET_ADVERTISEMENTS}?page=${page}&limit=${limit}`,
+        `${GET_ADVERTISEMENTS}?${params}`,
       );
 
       return res.data;

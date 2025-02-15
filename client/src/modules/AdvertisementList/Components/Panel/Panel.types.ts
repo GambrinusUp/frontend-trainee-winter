@@ -1,8 +1,7 @@
-import { AdvertisementType } from '../../../../shared/types';
+import { UseFormReturnType } from '@mantine/form';
+
+import { FilterFormValues } from '../../AdvertisementList.types';
 
 export interface PanelProps {
-  searchTerm: string;
-  onSearchChange: (searchTerm: string) => void;
-  selectedCategory: AdvertisementType | '';
-  onCategoryChange: (value: AdvertisementType | '') => void;
+  form: UseFormReturnType<FilterFormValues>;
 }
