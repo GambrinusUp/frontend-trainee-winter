@@ -3,10 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { login, register } from './AuthStore.action';
 import { AUTH_SLICE_NAME } from './AuthStore.const';
 import { AuthStoreState } from './AuthStore.types';
+import { loadTokenFromLocalStorage } from './AuthStore.utils';
 
 const initialState: AuthStoreState = {
-  token: null,
-  isLoggedIn: false,
+  token: loadTokenFromLocalStorage(),
+  isLoggedIn: !!loadTokenFromLocalStorage(),
   isLoading: false,
   error: undefined,
 };
@@ -17,6 +18,7 @@ export const AuthSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.token = null;
+      localStorage.setItem('token', '');
       state.isLoggedIn = false;
     },
   },
@@ -29,11 +31,13 @@ export const AuthSlice = createSlice({
       .addCase(register.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.token = payload.token;
+        localStorage.setItem('token', payload.token);
         state.isLoggedIn = true;
         state.error = undefined;
       })
       .addCase(register.rejected, (state, { payload }) => {
         state.isLoading = false;
+        localStorage.setItem('token', '');
         state.isLoggedIn = false;
         state.error = payload;
       })
@@ -44,11 +48,13 @@ export const AuthSlice = createSlice({
       .addCase(login.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.token = payload.token;
+        localStorage.setItem('token', payload.token);
         state.isLoggedIn = true;
         state.error = undefined;
       })
       .addCase(login.rejected, (state, { payload }) => {
         state.isLoading = false;
+        localStorage.setItem('token', '');
         state.isLoggedIn = false;
         state.error = payload;
       });

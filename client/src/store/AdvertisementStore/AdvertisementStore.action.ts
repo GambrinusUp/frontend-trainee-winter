@@ -32,9 +32,15 @@ export const createAdvertisement = createAsyncThunk<
   CREATE_ADVERTISEMENT_ACTION_NAME,
   async (advertisementData, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('token');
       const res = await axiosInstance.post<AdvertisementItemResponse>(
         CREATE_ADVERTISEMENT,
         { ...advertisementData },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       return res.data;
@@ -162,9 +168,15 @@ export const editAdvertisement = createAsyncThunk<
   EDIT_ADVERTISEMENT_ACTION_NAME,
   async ({ id, advertisement }, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('token');
       const res = await axiosInstance.put<AdvertisementItemResponse>(
         GET_ADVERTISEMENT(id),
         { ...advertisement },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       return res.data;
@@ -187,8 +199,14 @@ export const deleteAdvertisement = createAsyncThunk<
   }
 >(DELETE_ADVERTISEMENT_ACTION_NAME, async ({ id }, { rejectWithValue }) => {
   try {
+    const token = localStorage.getItem('token');
     await axiosInstance.delete<AdvertisementItemResponse>(
       GET_ADVERTISEMENT(id),
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
 
     return { id };
