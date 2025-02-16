@@ -24,7 +24,7 @@ git clone https://github.com/GambrinusUp/seller-personal-account.git
 ```
 2. Установите зависимости
 ```
-npm install
+npm run install:all
 ```
 3. Запустите
 ```
