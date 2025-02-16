@@ -65,5 +65,5 @@ Server(дополнительные технологии):
 - bcryptjs (для хеширования паролей)
 
 ## Примечание:
-API было доработано: добавлена авторизация/регистрация, а также пагинация и фильтрация для эндпоинта `GET /items`, при этом формат возвращаемых объявлений не был изменён. (подробнее об изменениях: https://github.com/GambrinusUp/frontend-trainee-winter/blob/main/server/README-API.md)
+API было доработано: добавлена авторизация/регистрация, а также пагинация и фильтрация для эндпоинта `GET /items`, при этом формат возвращаемых объявлений не был изменён. (подробнее об изменениях: https://github.com/GambrinusUp/frontend-trainee-winter/blob/main/server/README-API.md#изменения)
 Если такое недопустимо, то в репозитории присутствует ветка без серьёзной модификации API (добавлена только пагинация и тестовые данные): https://github.com/GambrinusUp/frontend-trainee-winter/tree/without_api_modification
