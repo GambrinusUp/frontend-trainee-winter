@@ -26,7 +26,11 @@ git clone https://github.com/GambrinusUp/seller-personal-account.git
 ```
 npm run install:all
 ```
-3. Запустите
+3. Перейдите в репозиторий
+```
+cd frontend-trainee-winter
+```
+4. Запустите
 ```
 npm run start
 ```
@@ -36,7 +40,11 @@ npm run start
 ```
 git clone https://github.com/GambrinusUp/seller-personal-account.git
 ```
-2. Запустите контейнер:
+2. Перейдите в репозиторий
+```
+cd frontend-trainee-winter
+```
+3. Запустите контейнер:
 ```
 docker-compose up --build
 ```
