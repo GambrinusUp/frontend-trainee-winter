@@ -14,6 +14,7 @@ import { initialValues } from './PlacementForm.const';
 import { FormValues } from './PlacementForm.types';
 import { mapAdvertisementData } from './PlacementForm.utils';
 
+// Хук, управления формой, при перезагрузке данные сохраняются в локальное хранилище
 const usePlacementForm = () => {
   const dispatch = useAppDispatch();
   const { showSuccess } = useNotification();
@@ -22,6 +23,7 @@ const usePlacementForm = () => {
     (state) => state.advertisementStore,
   );
 
+  // Сохранение с дебаунсом
   const debouncedSave = useMemo(
     () =>
       debounce((values: FormValues) => {
@@ -32,6 +34,7 @@ const usePlacementForm = () => {
 
   const savedData = JSON.parse(localStorage.getItem('placementDraft') || '{}');
 
+  // Форма с полями
   const form = useForm<FormValues>({
     mode: 'uncontrolled',
     initialValues: {
@@ -112,11 +115,13 @@ const usePlacementForm = () => {
     },
   });
 
+  // Очистка формы и черновика
   const clear = () => {
     form.setValues(initialValues);
     setActive(0);
   };
 
+  // Следующий шаг
   const nextStep = () => {
     form.validate();
     if (form.isValid()) {
@@ -124,10 +129,12 @@ const usePlacementForm = () => {
     }
   };
 
+  // Предыдущий
   const prevStep = () => {
     setActive((current) => (current > 0 ? current - 1 : current));
   };
 
+  // Подтверждение создания или редактирования объявления
   const handleSubmit = async () => {
     form.validate();
     if (form.isValid()) {

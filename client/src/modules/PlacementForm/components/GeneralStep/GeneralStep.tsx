@@ -7,9 +7,11 @@ import { debounce } from '../../../../utils/debounce';
 import { FormValues } from '../../PlacementForm.types';
 import { isImageUrl } from './GeneralStep.utils';
 
+// Шаг формы с общими полями
 const GeneralStep = ({ form }: { form: UseFormReturnType<FormValues> }) => {
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 
+  // Показ картинки с дебаунсом
   const debouncedSetImageUrl = useMemo(
     () =>
       debounce((newLink: string) => {

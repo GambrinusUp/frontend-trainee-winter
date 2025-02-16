@@ -1,3 +1,4 @@
+// Функция для валидации ссылки на картинку
 export const isImageUrl = (url: string) => {
   try {
     const parsedUrl = new URL(url);

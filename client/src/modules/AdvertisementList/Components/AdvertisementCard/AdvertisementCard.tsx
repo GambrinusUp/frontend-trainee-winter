@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import NoImage from '../../../../static/izobrazhenie_sozdanie_kartinki_obgutyszi59o_512.png';
 import { AdvertisementCardProps } from './AdvertisementCard.types';
 
+// Компонент списка, с краткой информацией
 const AdvertisementCard = ({
   id,
   name,

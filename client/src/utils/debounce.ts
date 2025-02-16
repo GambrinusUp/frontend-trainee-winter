@@ -1,3 +1,4 @@
+// Дебаунс функция
 export const debounce = <T extends unknown[], U>(
   callback: (...args: T) => PromiseLike<U> | U,
   wait: number,

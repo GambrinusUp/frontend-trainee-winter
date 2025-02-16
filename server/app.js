@@ -224,12 +224,14 @@ app.post("/items", authenticateToken, (req, res) => {
 app.get("/items", (req, res) => {
   let filteredItems = items;
 
+  // Фильтрация по категории
   if (req.query.type) {
     filteredItems = filteredItems.filter(
       (item) => item.type === req.query.type
     );
   }
 
+  // Поиск по названию
   if (req.query.name) {
     const searchName = req.query.name.toLowerCase();
     filteredItems = filteredItems.filter((item) =>
@@ -237,6 +239,7 @@ app.get("/items", (req, res) => {
     );
   }
 
+  // Дополнительная фильтрация для категорий
   if (req.query.type === "Недвижимость") {
     if (req.query.propertyType) {
       filteredItems = filteredItems.filter(
@@ -312,6 +315,7 @@ app.get("/items", (req, res) => {
     }
   }
 
+  // Пагинация
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
   const startIndex = (page - 1) * limit;

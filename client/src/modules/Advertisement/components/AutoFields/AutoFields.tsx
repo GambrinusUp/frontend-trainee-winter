@@ -2,6 +2,7 @@ import { Group, Text, Title } from '@mantine/core';
 
 import { AutoAdvertisement } from '../../../../store/AdvertisementStore/AdvertisementStore.types';
 
+// Компонент, отображающий поля, связанные с авто
 const AutoFields = ({
   brand,
   model,

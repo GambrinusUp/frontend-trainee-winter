@@ -9,6 +9,7 @@ import useFilterForm from './AdvertisementList.hooks';
 import AdvertisementCard from './Components/AdvertisementCard/AdvertisementCard';
 import Panel from './Components/Panel/Panel';
 
+// Модуль, для показа списка объявлений, с возможностью добавлении новых
 const AdvertisementList = () => {
   const dispatch = useAppDispatch();
   const { advertisements, currentPage, totalPages, isLoading, error } =
@@ -17,11 +18,13 @@ const AdvertisementList = () => {
   const { showError } = useNotification();
   const { scrollIntoView } = useScrollIntoView();
 
+  // Показ ошибок
   useEffect(() => {
     if (error) showError(error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
+  // Получение данных
   useEffect(() => {
     dispatch(
       getAdvertisements({
@@ -31,6 +34,7 @@ const AdvertisementList = () => {
     );
   }, [dispatch]);
 
+  // Пагинация
   const handleChangePage = (page: number) => {
     dispatch(
       getAdvertisements({

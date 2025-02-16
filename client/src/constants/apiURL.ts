@@ -1,3 +1,4 @@
+// Базовый URL и маршруты для работы с API
 export const BASE_URL = 'http://localhost:3000';
 
 export const CREATE_ADVERTISEMENT = `${BASE_URL}/items`;

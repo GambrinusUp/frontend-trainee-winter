@@ -11,6 +11,7 @@ import CategoryStep from './components/CategoryStep/CategoryStep';
 import GeneralStep from './components/GeneralStep/GeneralStep';
 import usePlacementForm from './PlacementForm.hooks';
 
+// Модуль с формой для размещения и редактирования объявлений
 const PlacementForm = () => {
   const { isLoggedIn } = useAppSelector((state) => state.authStore);
   const { isEditing, isLoading, error } = useAppSelector(

@@ -6,9 +6,11 @@ import { getAdvertisements } from '../../store/AdvertisementStore/AdvertisementS
 import { debounce } from '../../utils/debounce';
 import { FilterFormValues } from './AdvertisementList.types';
 
+// Хук управления формой
 const useFilterForm = () => {
   const dispatch = useAppDispatch();
 
+  // Поиск с дебаунсом
   const debouncedSearch = useMemo(
     () =>
       debounce((values: FilterFormValues) => {
@@ -23,6 +25,7 @@ const useFilterForm = () => {
     [dispatch],
   );
 
+  // Форма
   const form = useForm<FilterFormValues>({
     mode: 'uncontrolled',
     initialValues: {

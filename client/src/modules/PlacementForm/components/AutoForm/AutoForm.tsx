@@ -4,6 +4,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { AUTO_BRANDS } from '../../../../constants/auto';
 import { FormValues } from '../../PlacementForm.types';
 
+// Компонент с полями для авто
 const AutoForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
   return (
     <Stack gap="md" p="lg" w={{ base: '100%', sm: 600 }} align="stretch">

@@ -2,6 +2,7 @@ import { Group, Text, Title } from '@mantine/core';
 
 import { RealEstateAdvertisement } from '../../../../store/AdvertisementStore/AdvertisementStore.types';
 
+// Компонент, отображающий поля, связанные с недвижимостью
 const RealEstateFields = ({
   propertyType,
   area,

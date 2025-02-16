@@ -2,6 +2,7 @@ import { Group, Text, Title } from '@mantine/core';
 
 import { ServicesAdvertisement } from '../../../../store/AdvertisementStore/AdvertisementStore.types';
 
+// Компонент, отображающий поля, связанные с услугами
 const ServicesFields = ({
   serviceType,
   experience,

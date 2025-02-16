@@ -4,6 +4,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { REALTY_TYPES } from '../../../../constants/realty';
 import { FormValues } from '../../PlacementForm.types';
 
+// Компонент с полями для недвижимости
 const RealtyForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
   return (
     <Stack gap="md" p="lg" w={{ base: '100%', sm: 600 }} align="stretch">

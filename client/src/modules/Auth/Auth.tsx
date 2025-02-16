@@ -8,6 +8,7 @@ import { useNotification } from '../../hooks/useNotification';
 import { login, register } from '../../store/AuthStore/AuthStore.action';
 import { AuthCredentials } from '../../store/AuthStore/AuthStore.types';
 
+// Модуль авторизации
 const Auth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

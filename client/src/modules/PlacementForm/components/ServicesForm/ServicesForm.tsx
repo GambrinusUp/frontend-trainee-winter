@@ -4,6 +4,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { SERVICES_TYPES } from '../../../../constants/services';
 import { FormValues } from '../../PlacementForm.types';
 
+// Компонент с полями для услуг
 const ServicesForm = ({ form }: { form: UseFormReturnType<FormValues> }) => {
   return (
     <Stack gap="md" p="lg" w={{ base: '100%', sm: 600 }} align="stretch">

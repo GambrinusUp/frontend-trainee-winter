@@ -1,6 +1,7 @@
 import { notifications } from '@mantine/notifications';
 import { Check, X } from 'lucide-react';
 
+// Хук для показа уведомлений
 export function useNotification() {
   const showSuccess = (message: string) => {
     notifications.show({

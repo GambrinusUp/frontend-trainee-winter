@@ -2,6 +2,7 @@ import { AdvertisementType } from '../../shared/types';
 import { AdvertisementItem } from '../../store/AdvertisementStore/AdvertisementStore.types';
 import { FormValues } from './PlacementForm.types';
 
+// Маппер для формирования объекта для запроса
 export const mapAdvertisementData = (
   formData: FormValues,
 ): AdvertisementItem => {

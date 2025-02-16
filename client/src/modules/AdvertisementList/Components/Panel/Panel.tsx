@@ -20,6 +20,7 @@ import { AdvertisementType } from '../../../../shared/types';
 import { setEdit } from '../../../../store/AdvertisementStore/AdvertisementStoreSlice';
 import { PanelProps } from './Panel.types';
 
+// Панель с фильтрами, поиском и кнопкой создания
 const Panel = ({ form }: PanelProps) => {
   const { isLoggedIn } = useAppSelector((state) => state.authStore);
   const navigate = useNavigate();

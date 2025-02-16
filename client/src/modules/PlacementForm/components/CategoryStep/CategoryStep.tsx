@@ -6,6 +6,7 @@ import AutoForm from '../AutoForm/AutoForm';
 import RealtyForm from '../RealtyForm/RealtyForm';
 import ServicesForm from '../ServicesForm/ServicesForm';
 
+// В зависимости от категории будет показан необходимый компонент с полями
 const CategoryStep = ({ form }: { form: UseFormReturnType<FormValues> }) => {
   const type = form.getValues().type;
 

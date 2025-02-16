@@ -28,6 +28,7 @@ import AutoFields from './components/AutoFields/AutoFields';
 import RealEstateFields from './components/RealEstateFields/RealEstateFields';
 import ServicesFields from './components/ServicesFields/ServicesFields';
 
+// Модуль просмотра объявления, с возможностью редактирования и удаления
 const Advertisement = () => {
   const { id } = useParams();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
@@ -39,11 +40,13 @@ const Advertisement = () => {
   );
   const { showError, showSuccess } = useNotification();
 
+  // Редактирование
   const handleEdit = () => {
     dispatch(setEdit({ isEditing: true, advertisementEdit: advertisement }));
     navigate('/form');
   };
 
+  // Удаление
   const handleDelete = async () => {
     if (id) {
       const result = await dispatch(deleteAdvertisement({ id }));
@@ -54,15 +57,18 @@ const Advertisement = () => {
     }
   };
 
+  // Получение информации об объявлении
   useEffect(() => {
     if (id) dispatch(getAdvertisement({ id }));
   }, [dispatch, id]);
 
+  // Показ ошибок
   useEffect(() => {
     if (error) showError(error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
+  // Отображение загрузки данных
   if (isLoading) {
     return (
       <Flex justify="center" align="center">
