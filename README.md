@@ -22,11 +22,15 @@ npm run test
 ```
 git clone https://github.com/GambrinusUp/seller-personal-account.git
 ```
-2. Установите зависимости
+2. Перейдите в репозиторий
+```
+cd frontend-trainee-winter
+```
+3. Установите зависимости
 ```
 npm run install:all
 ```
-3. Запустите
+4. Запустите
 ```
 npm run start
 ```
@@ -36,7 +40,11 @@ npm run start
 ```
 git clone https://github.com/GambrinusUp/seller-personal-account.git
 ```
-2. Запустите контейнер:
+2. Перейдите в репозиторий
+```
+cd frontend-trainee-winter
+```
+3. Запустите контейнер:
 ```
 docker-compose up --build
 ```
@@ -61,7 +69,7 @@ Client:
 - Jest (для тестирования участков кода)
 
 Server(дополнительные технологии):
-- Jsonwebtoken (для аутентификации пользователей по jwt-токенам
+- Jsonwebtoken (для аутентификации пользователей по jwt-токенам)
 - bcryptjs (для хеширования паролей)
 
 ## Структура React приложения:
