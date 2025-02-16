@@ -71,11 +71,17 @@ const usePlacementForm = () => {
             errors.propertyType = 'Тип недвижимости обязателен';
 
           if (values.area <= 0) errors.area = 'Площадь должна быть больше 0';
+          else if (values.area > 10000)
+            errors.area = 'Площадь не может превышать 10000 кв.м.';
 
           if (values.rooms <= 0)
             errors.rooms = 'Количество комнат должно быть больше 0';
+          else if (values.rooms > 100)
+            errors.rooms = 'Количество комнат не может превышать 100';
 
           if (values.price <= 0) errors.price = 'Цена должна быть больше 0';
+          else if (values.price > 1000000000)
+            errors.price = 'Цена не может превышать 1 000 000 000';
         }
 
         if (values.type === AdvertisementType.Auto) {
@@ -91,6 +97,8 @@ const usePlacementForm = () => {
 
           if (values.mileage <= 0)
             errors.mileage = 'Пробег должен быть больше 0 км.';
+          else if (values.mileage > 1000000)
+            errors.mileage = 'Пробег не может превышать 1 000 000 км.';
         }
 
         if (values.type === AdvertisementType.Services) {
@@ -98,8 +106,12 @@ const usePlacementForm = () => {
 
           if (values.experience <= 0)
             errors.experience = 'Опыт работы обязателен';
+          else if (values.experience > 100)
+            errors.experience = 'Опыт работы не может превышать 100 лет';
 
           if (values.cost <= 0) errors.cost = 'Стоимость должна быть больше 0';
+          else if (values.cost > 1000000)
+            errors.cost = 'Стоимость не может превышать 1 000 000';
 
           if (values.workSchedule && values.workSchedule.length > 50)
             errors.workSchedule = 'Максимум 50 символов';
