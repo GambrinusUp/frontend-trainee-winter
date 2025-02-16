@@ -22,13 +22,13 @@ npm run test
 ```
 git clone https://github.com/GambrinusUp/seller-personal-account.git
 ```
-2. Установите зависимости
-```
-npm run install:all
-```
-3. Перейдите в репозиторий
+2. Перейдите в репозиторий
 ```
 cd frontend-trainee-winter
+```
+3. Установите зависимости
+```
+npm run install:all
 ```
 4. Запустите
 ```
