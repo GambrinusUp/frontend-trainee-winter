@@ -41,6 +41,11 @@ git clone https://github.com/GambrinusUp/seller-personal-account.git
 docker-compose up --build
 ```
 
+Клиент будет запущен по этому адресу:
+```
+http://localhost:8080/list
+```
+
 ## Используемые технологии:
 Client:
 - React
