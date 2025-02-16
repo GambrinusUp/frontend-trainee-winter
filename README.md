@@ -64,6 +64,33 @@ Server(дополнительные технологии):
 - Jsonwebtoken (для аутентификации пользователей по jwt-токенам
 - bcryptjs (для хеширования паролей)
 
+## Структура React приложения:
+- src/
+  - api/ - axiosInstance,
+  - constants/ - константы (например, apiURL)
+  - hooks/ - общие хуки (например, useNotification)
+  - modules/ - модули (например, Advertisement)
+  - shared/ - общие данные (например, types)
+  - static/ - статические данные (заглушка для фото)
+  - store/
+    - AdvertisementStore/
+      - AdvertisementStore.action - асинхронные действия
+      - AdvertisementStore.const - константы
+      - AdvertisementStore.types - типы данных
+      - AdvertisementStoreSlice - Redux Slice
+    - ...
+    - store.ts - корневой store, объединяющий все reducer
+  - test/ - тесты
+  - utils/ - вспомогательные функции
+
+В модуле могут быть:
+  - components/ - компоненты, связанные с этим модулем
+  - Module - сам модуль
+  - Module.const - константы
+  - Module.types - типы данных
+  - Module.hooks - хуки
+  - Module.utils - вспомогательные функции
+
 ## Примечание:
 API было доработано: добавлена авторизация/регистрация, а также пагинация и фильтрация для эндпоинта `GET /items`, при этом формат возвращаемых объявлений не был изменён. (подробнее об изменениях: https://github.com/GambrinusUp/frontend-trainee-winter/blob/main/server/README-API.md#изменения)
 Если такое недопустимо, то в репозитории присутствует ветка без серьёзной модификации API (добавлена только пагинация и тестовые данные): https://github.com/GambrinusUp/frontend-trainee-winter/tree/without_api_modification
