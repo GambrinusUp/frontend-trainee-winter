@@ -99,30 +99,35 @@ const Panel = ({ form }: PanelProps) => {
                 label="Площадь от"
                 key={form.key('areaFrom')}
                 {...form.getInputProps('areaFrom')}
+                allowNegative={false}
                 w={100}
               />
               <NumberInput
                 label="Площадь до"
                 key={form.key('areaTo')}
                 {...form.getInputProps('areaTo')}
+                allowNegative={false}
                 w={100}
               />
               <NumberInput
                 label="Комнат"
                 key={form.key('rooms')}
                 {...form.getInputProps('rooms')}
+                allowNegative={false}
                 w={80}
               />
               <NumberInput
                 label="Цена от"
                 key={form.key('priceFrom')}
                 {...form.getInputProps('priceFrom')}
+                allowNegative={false}
                 w={120}
               />
               <NumberInput
                 label="Цена до"
                 key={form.key('priceTo')}
                 {...form.getInputProps('priceTo')}
+                allowNegative={false}
                 w={120}
               />
             </>
@@ -148,12 +153,18 @@ const Panel = ({ form }: PanelProps) => {
                 label="Год от"
                 key={form.key('yearFrom')}
                 {...form.getInputProps('yearFrom')}
+                allowNegative={false}
+                min={1886}
+                max={2025}
                 w={100}
               />
               <NumberInput
                 label="Год до"
                 key={form.key('yearTo')}
                 {...form.getInputProps('yearTo')}
+                allowNegative={false}
+                min={1886}
+                max={2026}
                 w={100}
               />
             </>
@@ -173,18 +184,21 @@ const Panel = ({ form }: PanelProps) => {
                 label="Опыт (от)"
                 key={form.key('experienceFrom')}
                 {...form.getInputProps('experienceFrom')}
+                allowNegative={false}
                 w={100}
               />
               <NumberInput
                 label="Стоимость от"
                 key={form.key('costFrom')}
                 {...form.getInputProps('costFrom')}
+                allowNegative={false}
                 w={120}
               />
               <NumberInput
                 label="Стоимость до"
                 key={form.key('costTo')}
                 {...form.getInputProps('costTo')}
+                allowNegative={false}
                 w={120}
               />
             </>

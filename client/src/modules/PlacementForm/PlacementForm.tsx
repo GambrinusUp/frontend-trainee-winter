@@ -19,7 +19,7 @@ const PlacementForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
-  const { form, active, setActive, nextStep, prevStep, handleSubmit } =
+  const { form, active, setActive, nextStep, prevStep, handleSubmit, clear } =
     usePlacementForm();
   const { showError } = useNotification();
 
@@ -46,6 +46,13 @@ const PlacementForm = () => {
             : 'Редактирование объявления'}
         </Title>
       </Group>
+      {!isEditing && active < 2 && (
+        <Group justify="center">
+          <Button onClick={clear} variant="light" color="red" mt="md">
+            Очистить черновик
+          </Button>
+        </Group>
+      )}
       <Stepper
         active={active}
         onStepClick={setActive}

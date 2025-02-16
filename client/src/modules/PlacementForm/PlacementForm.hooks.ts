@@ -10,6 +10,7 @@ import {
 } from '../../store/AdvertisementStore/AdvertisementStore.action';
 import { debounce } from '../../utils/debounce';
 import { isImageUrl } from './components/GeneralStep/GeneralStep.utils';
+import { initialValues } from './PlacementForm.const';
 import { FormValues } from './PlacementForm.types';
 import { mapAdvertisementData } from './PlacementForm.utils';
 
@@ -34,26 +35,7 @@ const usePlacementForm = () => {
   const form = useForm<FormValues>({
     mode: 'uncontrolled',
     initialValues: {
-      ...{
-        id: undefined,
-        name: '',
-        description: '',
-        location: '',
-        image: '',
-        type: AdvertisementType.RealEstate,
-        propertyType: '',
-        area: 0,
-        rooms: 0,
-        price: 0,
-        brand: '',
-        model: '',
-        year: 2025,
-        mileage: 0,
-        serviceType: '',
-        experience: 0,
-        cost: 0,
-        workSchedule: '',
-      },
+      ...initialValues,
       ...savedData,
     },
     validate: (values) => {
@@ -130,6 +112,11 @@ const usePlacementForm = () => {
     },
   });
 
+  const clear = () => {
+    form.setValues(initialValues);
+    setActive(0);
+  };
+
   const nextStep = () => {
     form.validate();
     if (form.isValid()) {
@@ -174,7 +161,7 @@ const usePlacementForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [advertisementEdit, isEditing]);
 
-  return { form, active, setActive, nextStep, prevStep, handleSubmit };
+  return { form, active, setActive, nextStep, prevStep, handleSubmit, clear };
 };
 
 export default usePlacementForm;
